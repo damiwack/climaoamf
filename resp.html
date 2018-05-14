@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="sp">
+<head>
+  <title>CLIMA Observatorio Astronomico Municipal de Funes</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="CACHE-CONTROL" CONTENT="NO-CACHE">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="refresh" content="600">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="jumbotron">
+    <h2>Pagina del Clima del Observatorio Astronomico Municipal de Funes</h2>
+    <p>Estacion Metereologica Automatica</p>
+     <h3>Clima Actual</h3>
+      <p id="demo2"></p>
+      <p id="curl"></p>
+  </div>
+  </div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2">
+      <h3 id="column1"></h3>
+      <p id="demo1"></p>
+    </div>
+    <div class="col-sm-2">
+      <h3 id="column2"></h3>
+      <p id="demo3"></p>
+    </div>
+    <div class="col-sm-2">
+      <h3 id="column3"></h3>        
+      <p id="demo4"></p>
+      </div>
+    <div class="col-sm-2">
+      <h3 id="column4"></h3>        
+      <p id="demo5"></p>
+    </div>
+    <div class="col-sm-2">
+      <h3 id="column5"></h3>        
+      <p id="demo6"></p>
+    </div>
+    <div class="col-sm-2">
+      <h3 id="column6"></h3>        
+      <p id="demo7"></p>
+    </div>
+  </div>
+  </div>
+  
+  <div class="container">
+  <span style='display:block !important; width: 276px; text-align: center; font-family: sans-serif; font-size: 14px;'><a href='http://espanol.wunderground.com/cgi-bin/findweather/getForecast?query=Funes, AG' title='Funes, AG Weather Forecast'><img src='http://weathersticker.wunderground.com/weathersticker/sunandmoon_metric/language/espanol/global/stations/87480.gif' alt='Find more about Weather in Funes, AG' /></a><br><a href='http://www.wunderground.com' title='Get latest Weather Forecast updates' style='font-family: sans-serif; font-size: 12px;'>Click for weather forecast</a></span>
+</div>
+
+
+
+
+<script>
+
+jQuery(document).ready(function($) {
+
+  $.ajax({
+  url : "http://api.wunderground.com/api/nroapipersonal/geolookup/conditions/lang:SP/q/IA/pws:isantafe35.json",
+  dataType : "jsonp",
+  
+  success : function(parsed_json) {
+  
+  var location = parsed_json['location']['city'];
+  var temp_c = parsed_json['current_observation']['temp_c'];
+  var loctime = parsed_json['current_observation']['local_time_rfc822'];
+  var tiempo= parsed_json['current_observation']['weather'];
+  var icon = parsed_json['current_observation']['icon_url'];
+  var humedad = parsed_json['current_observation']['relative_humidity'];
+  var dirviento = parsed_json['current_observation']['wind_dir'];
+  var presion = parsed_json['current_observation']['pressure_mb'];
+  var precip = parsed_json['current_observation']['precip_today_metric'];
+  
+ 
+    document.getElementById("demo2").innerHTML = location + "<br>" + loctime+"<br>" + tiempo +"<br>"+  temp_c+" C" + "<br>" + "<img src="+icon+ " alt=" +tiempo+ ">" + "<br>" + "Humedad:" + humedad + "<br>" + "Viento:" + dirviento + "<br>" + "Presion: " + presion + " <br>" + "Lluvia Hoy: " + precip;
+    document.getElementById("curl").innerHTML ="<a href='"+ parsed_json['current_observation']['ob_url']+"'> Datos Completos e Historicos</a>";
+  }
+  /*
+  fail: function(parsed_json) {
+      alert("Falla");
+  }
+  */
+  
+
+  });
+  
+});
+  
+  jQuery(document).ready(function($) {
+  
+  	$.ajax({
+
+
+			url : "http://api.wunderground.com/api//nroapipersonal/forecast/lang:SP/q/IA/pws:isantafe35.json",
+
+
+			dataType : "jsonp",
+
+
+			success : function(parsed_json) {
+
+
+				var v1 = parsed_json['forecast']['txt_forecast']['forecastday'];
+
+                document.getElementById("column1").innerHTML = v1[0]['title'];
+                
+                
+                document.getElementById("demo1").innerHTML = "Pronostico para "+v1[0]['title']+" es " +v1[0]['fcttext_metric']+ "<br>" + "<img src="+v1[0]['icon_url']+ " alt=" +v1[0]['icon']+ ">";
+                
+                document.getElementById("column2").innerHTML = v1[1]['title'];
+
+               document.getElementById("demo3").innerHTML = "Pronostico para "+v1[1]['title']+" es " +v1[1]['fcttext_metric']+ "<br>" + "<img src="+v1[1]['icon_url']+ " alt=" +v1[1]['icon']+ ">";
+
+               document.getElementById("column3").innerHTML = v1[2]['title'];
+			 
+               document.getElementById("demo4").innerHTML = "Pronostico para "+v1[2]['title']+" es " +v1[2]['fcttext_metric']+ "<br>" + "<img src="+v1[2]['icon_url']+ " alt=" +v1[2]['icon']+ ">";
+               
+               document.getElementById("column4").innerHTML = v1[3]['title'];
+                 
+               document.getElementById("demo5").innerHTML = "Pronostico para "+v1[3]['title']+" es " +v1[3]['fcttext_metric']+ "<br>" + "<img src="+v1[3]['icon_url']+ " alt=" +v1[3]['icon']+ ">";
+               
+               document.getElementById("column5").innerHTML = v1[4]['title'];
+                 
+               document.getElementById("demo6").innerHTML = "Pronostico para "+v1[4]['title']+" es " +v1[4]['fcttext_metric']+ "<br>" + "<img src="+v1[4]['icon_url']+ " alt=" +v1[4]['icon']+ ">";
+               
+               document.getElementById("column6").innerHTML = v1[5]['title'];
+                 
+               document.getElementById("demo7").innerHTML = "Pronostico para "+v1[5]['title']+" es " +v1[5]['fcttext_metric']+ "<br>" + "<img src="+v1[5]['icon_url']+ " alt=" +v1[5]['icon']+ ">";
+
+			} 
+
+
+		}); 
+});
+  
+  
+
+
+  
+
+
+</script>
+
+
+
+
+</body>
+</html>
